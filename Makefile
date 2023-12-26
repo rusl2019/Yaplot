@@ -9,14 +9,17 @@ GTK_LDFLAGS = $(shell pkg-config gtk+-3.0 --libs)
 PNG_LDFLAGS = $(shell pkg-config libpng --libs)
 LDFLAGS     = $(GTK_LDFLAGS) $(PNG_LDFLAGS) -lm
 
-PKGDATADIR = /opt/homebrew/share/yaplot
-BINDIR     = /opt/homebrew/bin
+PREFIX := /opt/homebrew
+PKGDATADIR = $(PREFIX)/share/yaplot
+BINDIR     = $(PREFIX)/bin
+
+FFMPEG_DIR := $(PREFIX)/bin
 
 VERSION = 4.1.2
 
 CFLAGS  = -g -Wall -Werror -Werror=vla -I/opt/X11/include -I./include
 CFLAGS += $(GTK_CFLAGS) -DGTK_DISABLE_SINGLE_INCLUDES -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGSEAL_ENABLE
-CFLAGS += -DFFMPEG=\"'$(BINDIR)/ffmpeg -r %d -i - -y -pix_fmt yuv420p'\"
+CFLAGS += -DFFMPEG=\"'$(FFMPEG_DIR)/ffmpeg -r %d -i - -y -pix_fmt yuv420p'\"
 
 .PHONY: all
 all: gen_common $(PROG)
